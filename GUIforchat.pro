@@ -11,11 +11,13 @@ CONFIG += c++17
 SOURCES += \
     chat.cpp \
     main.cpp \
-    loginwindow.cpp
+    loginwindow.cpp \
+    networkclient.cpp
 
 HEADERS += \
     chat.h \
-    loginwindow.h
+    loginwindow.h \
+    networkclient.h
 
 FORMS += \
     chat.ui \
