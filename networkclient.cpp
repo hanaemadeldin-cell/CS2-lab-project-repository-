@@ -1,23 +1,16 @@
-#include "NetworkClient.h"
-#include <QDebug>
+#include "networkclient.h"
+#include <QTimer>
 
-NetworkClient::NetworkClient() {
-    socket = new QTcpSocket();
+void MockNetworkClient::connectToServer(const QString& ip) {
+    QTimer::singleShot(1000, this, [this, ip]() {
+        emit statusUpdated("Connected to Mock Server at " + ip);
+    });
 }
 
-void NetworkClient::connectToServer() {
-    socket->connectToHost("127.0.0.1", 12345);
+void MockNetworkClient::sendMessage(const QString& msg) {
+    emit messageReceived("Me", msg);
 
-    if (socket->waitForConnected()) {
-        qDebug() << "Connected to server!";
-    } else {
-        qDebug() << "Connection failed!";
-    }
-}
-
-void NetworkClient::sendMessage(QString message) {
-    socket->write(message.toUtf8());
-    socket->flush();
-
-    qDebug() << "Sent:" << message;
+    QTimer::singleShot(1500, this, [this]() {
+        emit messageReceived("Server", "Mock response: Received your message!");
+    });
 }
