@@ -16,8 +16,7 @@ void LoginWindow::on_loginpushButton_clicked()
         return;
     }
 
-    Chat *c = new Chat;
-    c->username = username;
+   Chat *c = new Chat(username);
     c->show();
     hide();
 }
@@ -25,6 +24,7 @@ LoginWindow::LoginWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::LoginWindow)
 {
+
     ui->setupUi(this);
 }
 

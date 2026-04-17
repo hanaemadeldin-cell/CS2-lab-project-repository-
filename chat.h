@@ -14,7 +14,7 @@ class Chat : public QWidget
     Q_OBJECT
 
 public:
-    explicit Chat(QWidget *parent = nullptr);
+    explicit Chat(QString username, QWidget *parent = nullptr);
     ~Chat();
     QString username;
 
@@ -25,8 +25,8 @@ private slots:
 
 private:
     Ui::Chat *ui;
-
   INetworkClient* client;
+
 };
 
 #endif // CHAT_H

@@ -17,10 +17,12 @@ public:
 
     virtual void connectToServer(const QString& ip) = 0;
     virtual void sendMessage(const QString& msg) = 0;
+    virtual void setUsername(const QString& user) = 0;
 signals:
     void messageReceived(QString user, QString text);
     void statusUpdated(QString status);
 };
+
 
 // Mocked Client (Requirement)
 class MockNetworkClient : public INetworkClient {
@@ -43,6 +45,7 @@ public:
 
     void connectToServer(const QString& ip) override;
     void sendMessage(const QString& msg) override;
+     void setUsername(const QString& user) override;
 
 private slots:
     void onConnected();
@@ -50,6 +53,7 @@ private slots:
     void onError(QAbstractSocket::SocketError socketError);
 
 private:
+     QString username;
     QTcpSocket* socket;
 };
 

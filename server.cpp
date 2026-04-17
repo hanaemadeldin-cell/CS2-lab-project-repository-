@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string_view>
+#include <string>
 #include <boost/asio.hpp>
 
 using boost::asio::ip::tcp;
@@ -9,36 +9,68 @@ using boost::asio::detached;
 using boost::asio::use_awaitable;
 using boost::asio::as_tuple;
 
+// ==============================
 // Handle one client
+// ==============================
 awaitable<void> handle_client(tcp::socket socket) {
-    char data[1024];
+    try {
+        while (true) {
+            char data[1024];
 
-    auto [ec, bytes_read] = co_await socket.async_read_some(
-        boost::asio::buffer(data),
-        as_tuple(use_awaitable)
-    );
+            auto [ec, bytes_read] = co_await socket.async_read_some(
+                boost::asio::buffer(data),
+                as_tuple(use_awaitable)
+            );
 
-    if (!ec) {
-        std::cout << "Server received: "
-                  << std::string_view(data, bytes_read) << "\n";
-    } else {
-        std::cout << "Read error: " << ec.message() << "\n";
-        co_return;
+            if (ec) break;
+
+std::string msg(data, bytes_read);
+
+std::cout << "\n--- JSON RECEIVED ---\n";
+
+// Extract value helper
+auto extractValue = [&](const std::string& key) {
+    size_t key_pos = msg.find("\"" + key + "\"");
+    if (key_pos == std::string::npos) return std::string("");
+
+    size_t colon = msg.find(":", key_pos);
+    size_t start = msg.find("\"", colon + 1);
+    size_t end = msg.find("\"", start + 1);
+
+    return msg.substr(start + 1, end - start - 1);
+};
+
+// Extract clean values
+std::string sender = extractValue("sender");
+std::string payload = extractValue("payload");
+std::string type = extractValue("type");
+
+// Print nicely
+std::cout << "Sender: " << sender << "\n";
+std::cout << "Message: " << payload << "\n";
+std::cout << "Type: " << type << "\n";
+
+std::cout << "---------------------\n";
+            std::string response = "Echo: " + msg;
+
+            co_await boost::asio::async_write(
+                socket,
+                boost::asio::buffer(response),
+                use_awaitable
+            );
+        }
     }
-
-    std::string response = "Message received\n";
-
-    co_await socket.async_write_some(
-        boost::asio::buffer(response),
-        use_awaitable
-    );
+    catch (...) {
+        std::cout << "Client disconnected.\n";
+    }
 }
-
-// Listener coroutine
+// ==============================
+// Listen for connections
+// ==============================
 awaitable<void> listener() {
-    auto executor = co_await boost::asio::this_coro::executor;
+    auto io_ctx = co_await boost::asio::this_coro::executor;
 
-    tcp::acceptor acceptor(executor, { tcp::v4(), 54321 });
+    tcp::acceptor acceptor(io_ctx, { tcp::v4(), 54321 });
 
     std::cout << "Server is listening on 127.0.0.1: port 54321...\n";
 
@@ -46,13 +78,17 @@ awaitable<void> listener() {
         auto [ec, socket] = co_await acceptor.async_accept(as_tuple(use_awaitable));
 
         if (!ec) {
-            co_spawn(executor, handle_client(std::move(socket)), detached);
-        } else {
+            co_spawn(io_ctx, handle_client(std::move(socket)), detached);
+        }
+        else {
             std::cout << "Accept error: " << ec.message() << "\n";
         }
     }
 }
 
+// ==============================
+// Main
+// ==============================
 int main() {
     boost::asio::io_context io_context;
 

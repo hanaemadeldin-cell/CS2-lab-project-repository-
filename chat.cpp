@@ -5,21 +5,27 @@
 #include <QMessageBox>
 #include "chatlogic.h"
 #include "networkclient.h"
+#include <QTime>
 
 
 // send later (we'll connect to network in step 2)
-Chat::Chat(QWidget *parent)
-    : QWidget(parent),
-    ui(new Ui::Chat)
+Chat::Chat(QString username, QWidget *parent)
+    : QWidget(parent), username(username), ui(new Ui::Chat)
 {
     ui->setupUi(this);
 
     client = new RealNetworkClient(this);
+    client->setUsername(username);
     client->connectToServer("127.0.0.1");
 
     connect(client, &INetworkClient::messageReceived,
             this, [this](QString user, QString text) {
-                ui->chattextEdit->insertPlainText(user + ": " + text + "\n");
+
+                QString time = QTime::currentTime().toString("hh:mm");
+
+                ui->chattextEdit->insertPlainText(
+                    time + " - " + user + ": " + text + "\n"
+                    );
             });
 
     connect(client, &INetworkClient::statusUpdated,
@@ -45,10 +51,14 @@ void Chat::on_SendpushButton_clicked()
         return;
     }
 
-    // ✅ SHOW MESSAGE IN UI (THIS WAS MISSING)
-    ui->chattextEdit->insertPlainText("Me: " + message + "\n");
+    QString time = QTime::currentTime().toString("hh:mm");
 
-    // send to server
+    QString formatted = logic.formatMessage(username, message);
+
+    ui->chattextEdit->insertPlainText(
+        time + " - " + formatted + "\n"
+        );
+
     client->sendMessage(message);
 
     ui->messagelineEdit->clear();
