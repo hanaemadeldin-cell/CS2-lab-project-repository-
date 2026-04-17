@@ -2,7 +2,25 @@
 #include "ui_loginwindow.h"
 #include "chat.h"
 #include <QString>
+#include "chatlogic.h"
+#include <QMessageBox>
 
+void LoginWindow::on_loginpushButton_clicked()
+{
+    ChatLogic logic;
+
+    QString username = ui->usernamelineEdit->text();
+
+    if (!logic.validateUsername(username)) {
+        QMessageBox::warning(this, "Error", "Username cannot be empty");
+        return;
+    }
+
+    Chat *c = new Chat;
+    c->username = username;
+    c->show();
+    hide();
+}
 LoginWindow::LoginWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::LoginWindow)
@@ -15,13 +33,5 @@ LoginWindow::~LoginWindow()
     delete ui;
 }
 
-void LoginWindow::on_loginpushButton_clicked()
-{
-    QString username = ui->usernamelineEdit->text();
-    Chat *c = new Chat;
-    c->username = username;
-    c->show();
-    hide();
 
-}
 
