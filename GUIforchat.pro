@@ -9,21 +9,27 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    changeusername.cpp \
     chat.cpp \
     chatlogic.cpp \
     main.cpp \
     loginwindow.cpp \
-    networkclient.cpp
+    networkclient.cpp \
+    settings.cpp
 
 HEADERS += \
+    changeusername.h \
     chat.h \
     chatlogic.h \
     loginwindow.h \
-    networkclient.h
+    networkclient.h \
+    settings.h
 
 FORMS += \
+    changeusername.ui \
     chat.ui \
-    loginwindow.ui
+    loginwindow.ui \
+    settings.ui
 
 TRANSLATIONS += \
     GUIforchat_en_US.ts

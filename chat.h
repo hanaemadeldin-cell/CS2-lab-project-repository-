@@ -14,18 +14,20 @@ class Chat : public QWidget
     Q_OBJECT
 
 public:
-    explicit Chat(QString username, QWidget *parent = nullptr);
+    Chat(QString username, QWidget *parent = nullptr);
     ~Chat();
     QString username;
-
+    Ui::Chat *ui;
+    Chat *chat;
 private slots:
     void on_SendpushButton_clicked();
     void on_ClearpushButton_2_clicked();
-    void on_ClosepushButton_clicked();
+    void on_settingspushButton_clicked();
 
 private:
-    Ui::Chat *ui;
+
   INetworkClient* client;
+
 
 };
 
