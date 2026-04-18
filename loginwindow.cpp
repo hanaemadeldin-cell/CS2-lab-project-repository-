@@ -16,7 +16,7 @@ void LoginWindow::on_loginpushButton_clicked()
         return;
     }
 
-   Chat *c = new Chat(username);
+    Chat *c = new Chat(username);
     c->show();
     hide();
 }

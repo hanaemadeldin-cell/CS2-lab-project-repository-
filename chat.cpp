@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include "chatlogic.h"
 #include "networkclient.h"
+#include "settings.h"
 #include <QTime>
 
 
@@ -71,15 +72,11 @@ void Chat::on_ClearpushButton_2_clicked()
 }
 
 
-void Chat::on_ClosepushButton_clicked()
+void Chat::on_settingspushButton_clicked()
 {
-    QMessageBox::StandardButton reply = QMessageBox::question(this, "Close Chat?", "Return to Login", QMessageBox::Yes|QMessageBox::No);
+    Settings *s = new Settings(this);
+    hide();
+    s->show();
 
-    if (reply == QMessageBox::Yes){
-        LoginWindow *l = new LoginWindow;
-        l->show();
-        hide();
-    }
-    else hide();
 }
 

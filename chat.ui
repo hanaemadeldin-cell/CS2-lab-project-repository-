@@ -75,17 +75,17 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="ClosepushButton">
+  <widget class="QPushButton" name="settingspushButton">
    <property name="geometry">
     <rect>
      <x>580</x>
-     <y>520</y>
+     <y>510</y>
      <width>100</width>
      <height>32</height>
     </rect>
    </property>
    <property name="text">
-    <string>Close Chat</string>
+    <string>Settings</string>
    </property>
   </widget>
  </widget>
