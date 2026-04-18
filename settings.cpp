@@ -1,5 +1,6 @@
 #include "settings.h"
 #include "loginwindow.h"
+#include "ui_changeusername.h"
 #include "ui_chat.h"
 #include "ui_settings.h"
 #include "changeusername.h"
@@ -23,6 +24,7 @@ Settings::~Settings()
 void Settings::on_ChangeUserpushButton_clicked()
 {
     Changeusername *c = new Changeusername(chat);
+    c->ui->currentusernamelabel->setText(chat->username);
     c->show();
     hide();
 

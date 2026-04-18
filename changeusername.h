@@ -15,13 +15,14 @@ class Changeusername : public QWidget
 public:
      explicit Changeusername(Chat *chatWindow, QWidget *parent = nullptr);
     ~Changeusername();
+     Ui::Changeusername *ui;
+     Chat *chat;
 
 private slots:
     void on_SaveUsernamepushButton_clicked();
 
 private:
-    Ui::Changeusername *ui;
-    Chat *chat;
+
 };
 
 #endif // CHANGEUSERNAME_H
