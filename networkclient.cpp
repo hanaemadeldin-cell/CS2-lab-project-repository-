@@ -55,7 +55,6 @@ void RealNetworkClient::onReadyRead() {
 
     // remove "Echo: " prefix
     QString response = QString::fromUtf8(data);
-    response.remove("Echo: ");
 
     QJsonDocument doc = QJsonDocument::fromJson(response.toUtf8());
 
