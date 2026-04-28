@@ -15,9 +15,12 @@ SOURCES += \
     main.cpp \
     loginwindow.cpp \
     networkclient.cpp \
-    settings.cpp
+    server.cpp \
+    settings.cpp \
+    test_logic.cpp
 
 HEADERS += \
+    MessageProcessor.hpp \
     changeusername.h \
     chat.h \
     chatlogic.h \
