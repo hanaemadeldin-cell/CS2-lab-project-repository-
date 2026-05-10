@@ -3,19 +3,24 @@
  <class>Settings</class>
  <widget class="QWidget" name="Settings">
   <property name="geometry">
-   <rect><x>0</x><y>0</y><width>586</width><height>420</height></rect>
+   <rect><x>0</x><y>0</y><width>400</width><height>380</height></rect>
   </property>
   <property name="windowTitle"><string>Settings</string></property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-
+  <property name="styleSheet">
+   <string>QWidget { background: #f5f5f5; font-family: -apple-system; font-size: 13px; } QPushButton { background: #e0e0e0; color: #333; border: none; border-radius: 8px; padding: 10px; font-size: 13px; } QPushButton:hover { background: #ccc; } QLabel { font-size: 15px; font-weight: bold; color: #333; }</string>
+  </property>
+  <layout class="QVBoxLayout">
+   <property name="spacing"><number>8</number></property>
+   <property name="leftMargin"><number>24</number></property>
+   <property name="rightMargin"><number>24</number></property>
+   <property name="topMargin"><number>20</number></property>
+   <property name="bottomMargin"><number>20</number></property>
    <item>
     <widget class="QLabel">
-     <property name="text"><string>&lt;b&gt;Settings&lt;/b&gt;</string></property>
+     <property name="text"><string>Settings</string></property>
      <property name="alignment"><set>Qt::AlignCenter</set></property>
     </widget>
    </item>
-
-   <!-- Original buttons -->
    <item>
     <widget class="QPushButton" name="ChangeUserpushButton">
      <property name="text"><string>Change Username</string></property>
@@ -36,23 +41,15 @@
      <property name="text"><string>Back</string></property>
     </widget>
    </item>
-
    <item>
     <widget class="QFrame">
      <property name="frameShape"><enum>QFrame::HLine</enum></property>
     </widget>
    </item>
-
-   <!-- BONUS buttons -->
    <item>
     <widget class="QLabel">
-     <property name="text"><string>&lt;b&gt;Bonus Features&lt;/b&gt;</string></property>
+     <property name="text"><string>Bonus Features</string></property>
      <property name="alignment"><set>Qt::AlignCenter</set></property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="saveAIKeypushButton">
-     <property name="text"><string>🤖 Set AI API Key</string></property>
     </widget>
    </item>
    <item>
@@ -70,7 +67,6 @@
      <property name="text"><string>📢 Send Group Message</string></property>
     </widget>
    </item>
-
   </layout>
  </widget>
  <resources/>
