@@ -1,9 +1,7 @@
 #include "networkclient.h"
 #include <QTimer>
-#include "networkclient.h"
 #include <QJsonObject>
 #include <QJsonDocument>
-
 
 void MockNetworkClient::connectToServer(const QString& ip) {
     QTimer::singleShot(1000, this, [this, ip]() {
@@ -13,63 +11,94 @@ void MockNetworkClient::connectToServer(const QString& ip) {
 
 void MockNetworkClient::sendMessage(const QString& msg) {
     emit messageReceived("Me", msg);
-
     QTimer::singleShot(1500, this, [this]() {
         emit messageReceived("Server", "Mock response: Received your message!");
     });
+}
+
+void MockNetworkClient::setUsername(const QString& user) {
+    username = user;
 }
 
 RealNetworkClient::RealNetworkClient(QObject* parent)
     : INetworkClient(parent)
 {
     socket = new QTcpSocket(this);
-
-    connect(socket, &QTcpSocket::connected, this, &RealNetworkClient::onConnected);
-    connect(socket, &QTcpSocket::readyRead, this, &RealNetworkClient::onReadyRead);
-    connect(socket, &QTcpSocket::errorOccurred, this, &RealNetworkClient::onError);
+    connect(socket, &QTcpSocket::connected,      this, &RealNetworkClient::onConnected);
+    connect(socket, &QTcpSocket::readyRead,      this, &RealNetworkClient::onReadyRead);
+    connect(socket, &QTcpSocket::errorOccurred,  this, &RealNetworkClient::onError);
 }
 
 void RealNetworkClient::connectToServer(const QString& ip) {
     socket->connectToHost(ip, 54321);
 }
 
-void RealNetworkClient::sendMessage(const QString& msg) {
-    QJsonObject obj;
-    obj["type"] = "message";
-    obj["sender"] = username;
-    obj["payload"] = msg;
-
-    QJsonDocument doc(obj);
-    socket->write(doc.toJson());
-}
-
 void RealNetworkClient::setUsername(const QString& user) {
     username = user;
 }
+
+void RealNetworkClient::sendMessage(const QString& msg) {
+    if (socket->state() != QAbstractSocket::ConnectedState) return;
+
+    // If msg is already valid JSON, send it directly (private/group messages)
+    QJsonDocument check = QJsonDocument::fromJson(msg.toUtf8());
+    if (!check.isNull() && check.isObject()) {
+        socket->write(msg.toUtf8() + "\n");
+        socket->flush();
+        return;
+    }
+
+    // Otherwise wrap as a chat message
+    QJsonObject obj;
+    obj["type"]    = "chat";
+    obj["sender"]  = username;
+    obj["payload"] = msg;
+    socket->write(QJsonDocument(obj).toJson(QJsonDocument::Compact) + "\n");
+    socket->flush();
+}
+
 void RealNetworkClient::onConnected() {
-    emit statusUpdated("Connected to REAL server");
+    // Send login message so server registers this user
+    QJsonObject loginMsg;
+    loginMsg["type"]    = "login";
+    loginMsg["sender"]  = username;
+    loginMsg["payload"] = "";
+    socket->write(QJsonDocument(loginMsg).toJson(QJsonDocument::Compact) + "\n");
+    socket->flush();
+
+    emit statusUpdated("Connected to server");
 }
 
 void RealNetworkClient::onReadyRead() {
-    QByteArray data = socket->readAll();
+    while (socket->canReadLine()) {
+        QByteArray line = socket->readLine().trimmed();
+        if (line.isEmpty()) continue;
 
-    // remove "Echo: " prefix
-    QString response = QString::fromUtf8(data);
+        QJsonDocument doc = QJsonDocument::fromJson(line);
+        if (!doc.isObject()) {
+            emit messageReceived("Server", QString::fromUtf8(line));
+            continue;
+        }
 
-    QJsonDocument doc = QJsonDocument::fromJson(response.toUtf8());
-
-    if (doc.isObject()) {
         QJsonObject obj = doc.object();
-        QString payload = obj["payload"].toString();
+        QString type    = obj.value("type").toString();
+        QString sender  = obj.value("sender").toString("Server");
+        QString payload = obj.value("payload").toString();
 
-        emit messageReceived("Server", payload);
-    } else {
-        emit messageReceived("Server", response);
+        if (type == "chat") {
+            emit messageReceived(sender, payload);
+        } else if (type == "status") {
+            emit statusUpdated(obj.value("message").toString());
+        } else if (type == "error") {
+            emit statusUpdated("Error: " + obj.value("message").toString());
+        } else {
+            // Pass all other types (private, group, user_list) as raw JSON
+            emit messageReceived(sender, payload);
+        }
     }
 }
 
 void RealNetworkClient::onError(QAbstractSocket::SocketError) {
-    if (socket->error() != QAbstractSocket::RemoteHostClosedError) {
+    if (socket->error() != QAbstractSocket::RemoteHostClosedError)
         emit statusUpdated("Connection error: " + socket->errorString());
-    }
 }

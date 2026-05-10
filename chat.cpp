@@ -33,20 +33,28 @@ Chat::Chat(QString username, QWidget *parent)
     connect(m_groupsWindow, &GroupsWindow::groupMessageRequested,
             this, &Chat::onGroupMessageRequested);
 
-    // Connect buttons manually to be safe
-    connect(ui->userspushButton,   &QPushButton::clicked, this, &Chat::on_userspushButton_clicked);
-    connect(ui->groupspushButton,  &QPushButton::clicked, this, &Chat::on_groupspushButton_clicked);
-    connect(ui->settingspushButton,&QPushButton::clicked, this, &Chat::on_settingspushButton_clicked);
-    connect(ui->SendpushButton,    &QPushButton::clicked, this, &Chat::on_SendpushButton_clicked);
-    connect(ui->ClearpushButton_2, &QPushButton::clicked, this, &Chat::on_ClearpushButton_2_clicked);
-    connect(ui->messagelineEdit,   &QLineEdit::returnPressed, this, &Chat::on_SendpushButton_clicked);
+    // Only Send button and Enter key send messages - NOT Clear
+    connect(ui->SendpushButton, &QPushButton::clicked,
+            this, &Chat::on_SendpushButton_clicked);
+    connect(ui->messagelineEdit, &QLineEdit::returnPressed,
+            this, &Chat::on_SendpushButton_clicked);
+    connect(ui->ClearpushButton_2, &QPushButton::clicked,
+            this, &Chat::on_ClearpushButton_2_clicked);
+    connect(ui->userspushButton, &QPushButton::clicked,
+            this, &Chat::on_userspushButton_clicked);
+    connect(ui->groupspushButton, &QPushButton::clicked,
+            this, &Chat::on_groupspushButton_clicked);
+    connect(ui->settingspushButton, &QPushButton::clicked,
+            this, &Chat::on_settingspushButton_clicked);
 
     client = new RealNetworkClient(this);
     client->setUsername(username);
     client->connectToServer("127.0.0.1");
 
-    connect(client, &INetworkClient::messageReceived, this, &Chat::onIncomingMessage);
-    connect(client, &INetworkClient::statusUpdated,   this, &Chat::onStatusUpdated);
+    connect(client, &INetworkClient::messageReceived,
+            this, &Chat::onIncomingMessage);
+    connect(client, &INetworkClient::statusUpdated,
+            this, &Chat::onStatusUpdated);
 }
 
 Chat::~Chat()
@@ -72,12 +80,9 @@ void Chat::onStatusUpdated(QString status)
 
 void Chat::on_SendpushButton_clicked()
 {
-    ChatLogic logic;
-    QString message = ui->messagelineEdit->text();
-    if (!logic.validateMessage(message)) {
-        QMessageBox::warning(this, "Error", "Message cannot be empty");
-        return;
-    }
+    QString message = ui->messagelineEdit->text().trimmed();
+    if (message.isEmpty()) return;   // silent return, no warning popup
+
     QString time = QTime::currentTime().toString("hh:mm");
     ui->chattextEdit->append("<span style='color:#888;'>" + time +
                              "</span> <b>" + username + "</b>: " + message);
@@ -86,11 +91,10 @@ void Chat::on_SendpushButton_clicked()
     ui->messagelineEdit->clear();
 }
 
-// Clears the chat display area
 void Chat::on_ClearpushButton_2_clicked()
 {
-    ui->chattextEdit->setPlainText("");
     ui->messagelineEdit->clear();
+    ui->chattextEdit->setPlainText("");
 }
 
 void Chat::on_settingspushButton_clicked()
@@ -100,7 +104,6 @@ void Chat::on_settingspushButton_clicked()
     s->show();
 }
 
-// Opens the Users window (separate screen showing online users)
 void Chat::on_userspushButton_clicked()
 {
     m_usersWindow->show();
@@ -108,7 +111,6 @@ void Chat::on_userspushButton_clicked()
     m_usersWindow->activateWindow();
 }
 
-// Opens the Groups window (separate screen for group chat)
 void Chat::on_groupspushButton_clicked()
 {
     m_groupsWindow->show();
