@@ -3,91 +3,51 @@
  <class>Chat</class>
  <widget class="QWidget" name="Chat">
   <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>766</width>
-    <height>556</height>
-   </rect>
+   <rect><x>0</x><y>0</y><width>766</width><height>556</height></rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
+  <property name="windowTitle"><string>Chat</string></property>
+
+  <!-- Chat history area -->
+  <widget class="QTextEdit" name="chattextEdit">
+   <property name="geometry"><rect><x>90</x><y>60</y><width>591</width><height>321</height></rect></property>
+   <property name="readOnly"><bool>true</bool></property>
+  </widget>
+
+  <!-- Message input -->
   <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>420</y>
-     <width>131</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Type Message:</string>
-   </property>
+   <property name="geometry"><rect><x>90</x><y>420</y><width>131</width><height>16</height></rect></property>
+   <property name="text"><string>Type Message:</string></property>
   </widget>
   <widget class="QLineEdit" name="messagelineEdit">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>420</y>
-     <width>461</width>
-     <height>21</height>
-    </rect>
-   </property>
+   <property name="geometry"><rect><x>220</x><y>420</y><width>461</width><height>21</height></rect></property>
   </widget>
+
+  <!-- Right-side buttons (original + bonus) -->
   <widget class="QPushButton" name="SendpushButton">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>450</y>
-     <width>100</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Send</string>
-   </property>
+   <property name="geometry"><rect><x>580</x><y>450</y><width>100</width><height>32</height></rect></property>
+   <property name="text"><string>Send</string></property>
   </widget>
   <widget class="QPushButton" name="ClearpushButton_2">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>480</y>
-     <width>100</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Clear</string>
-   </property>
-  </widget>
-  <widget class="QTextEdit" name="chattextEdit">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>60</y>
-     <width>591</width>
-     <height>321</height>
-    </rect>
-   </property>
-   <property name="readOnly">
-    <bool>true</bool>
-   </property>
+   <property name="geometry"><rect><x>580</x><y>485</y><width>100</width><height>32</height></rect></property>
+   <property name="text"><string>Clear</string></property>
   </widget>
   <widget class="QPushButton" name="settingspushButton">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>510</y>
-     <width>100</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Settings</string>
-   </property>
+   <property name="geometry"><rect><x>580</x><y>520</y><width>100</width><height>32</height></rect></property>
+   <property name="text"><string>Settings</string></property>
   </widget>
+
+  <!-- BONUS: Users & Groups buttons -->
+  <widget class="QPushButton" name="userspushButton">
+   <property name="geometry"><rect><x>90</x><y>395</y><width>110</width><height>28</height></rect></property>
+   <property name="text"><string>👥 Users</string></property>
+   <property name="toolTip"><string>See online users and start private chats</string></property>
+  </widget>
+  <widget class="QPushButton" name="groupspushButton">
+   <property name="geometry"><rect><x>210</x><y>395</y><width>110</width><height>28</height></rect></property>
+   <property name="text"><string>💬 Groups</string></property>
+   <property name="toolTip"><string>Create and join group chats</string></property>
+  </widget>
+
  </widget>
  <resources/>
  <connections/>

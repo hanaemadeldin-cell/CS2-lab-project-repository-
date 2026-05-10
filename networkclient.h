@@ -18,34 +18,30 @@ public:
     virtual void connectToServer(const QString& ip) = 0;
     virtual void sendMessage(const QString& msg) = 0;
     virtual void setUsername(const QString& user) = 0;
+
 signals:
     void messageReceived(QString user, QString text);
     void statusUpdated(QString status);
 };
-
 
 // Mocked Client (Requirement)
 class MockNetworkClient : public INetworkClient {
     Q_OBJECT
-
 public:
     void connectToServer(const QString& ip) override;
     void sendMessage(const QString& msg) override;
-
-signals:
-    void statusUpdated(QString status);
-    void messageReceived(QString user, QString text);
+    void setUsername(const QString& user) override { Q_UNUSED(user) }
+    // NO signals here - inherited from INetworkClient
 };
 
 class RealNetworkClient : public INetworkClient {
     Q_OBJECT
-
 public:
     explicit RealNetworkClient(QObject* parent = nullptr);
 
     void connectToServer(const QString& ip) override;
     void sendMessage(const QString& msg) override;
-     void setUsername(const QString& user) override;
+    void setUsername(const QString& user) override;
 
 private slots:
     void onConnected();
@@ -53,7 +49,7 @@ private slots:
     void onError(QAbstractSocket::SocketError socketError);
 
 private:
-     QString username;
+    QString username;
     QTcpSocket* socket;
 };
 
