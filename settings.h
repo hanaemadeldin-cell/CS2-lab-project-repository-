@@ -1,12 +1,11 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include "chat.h"
 #include <QWidget>
+#include <QLineEdit>
 
-namespace Ui {
-class Settings;
-}
+namespace Ui { class Settings; }
+class Chat;
 
 class Settings : public QWidget
 {
@@ -18,12 +17,12 @@ public:
 
 private slots:
     void on_ChangeUserpushButton_clicked();
-
     void on_clearchatpushButton_clicked();
-
     void on_LogoutpushButton_clicked();
-
     void on_BackpushButton_clicked();
+    void on_privateMsgpushButton_clicked();
+    void on_createGroupButton_clicked();
+    void on_groupMsgpushButton_clicked();
 
 private:
     Ui::Settings *ui;

@@ -3,91 +3,107 @@
  <class>Chat</class>
  <widget class="QWidget" name="Chat">
   <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>766</width>
-    <height>556</height>
-   </rect>
+   <rect><x>0</x><y>0</y><width>750</width><height>520</height></rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
+  <property name="windowTitle"><string>Chat</string></property>
+  <property name="styleSheet">
+   <string>
+    QWidget { background-color: #f5f5f5; font-family: -apple-system; font-size: 13px; }
+    QTextEdit { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 8px; }
+    QLineEdit { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 6px 10px; }
+    QPushButton#SendpushButton { background-color: #0084ff; color: white; border: none; border-radius: 8px; padding: 7px 16px; font-weight: bold; }
+    QPushButton#SendpushButton:hover { background-color: #0073e6; }
+    QPushButton#ClearpushButton_2 { background-color: #e0e0e0; color: #333; border: none; border-radius: 8px; padding: 7px 16px; }
+    QPushButton#userspushButton { background-color: #34c759; color: white; border: none; border-radius: 8px; padding: 7px 16px; font-weight: bold; }
+    QPushButton#groupspushButton { background-color: #ff9500; color: white; border: none; border-radius: 8px; padding: 7px 16px; font-weight: bold; }
+    QPushButton#settingspushButton { background-color: #8e8e93; color: white; border: none; border-radius: 8px; padding: 7px 16px; font-weight: bold; }
+   </string>
   </property>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>420</y>
-     <width>131</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Type Message:</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="messagelineEdit">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>420</y>
-     <width>461</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="SendpushButton">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>450</y>
-     <width>100</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Send</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="ClearpushButton_2">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>480</y>
-     <width>100</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Clear</string>
-   </property>
-  </widget>
-  <widget class="QTextEdit" name="chattextEdit">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>60</y>
-     <width>591</width>
-     <height>321</height>
-    </rect>
-   </property>
-   <property name="readOnly">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="settingspushButton">
-   <property name="geometry">
-    <rect>
-     <x>580</x>
-     <y>510</y>
-     <width>100</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Settings</string>
-   </property>
-  </widget>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing"><number>10</number></property>
+   <property name="leftMargin"><number>16</number></property>
+   <property name="rightMargin"><number>16</number></property>
+   <property name="topMargin"><number>12</number></property>
+   <property name="bottomMargin"><number>12</number></property>
+
+   <!-- Header -->
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <widget class="QLabel" name="titleLabel">
+       <property name="text"><string>Chat Room</string></property>
+       <property name="styleSheet"><string>font-size: 17px; font-weight: bold; color: #1a1a1a;</string></property>
+      </widget>
+     </item>
+     <item>
+      <spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="userspushButton">
+       <property name="text"><string>Users</string></property>
+       <property name="minimumWidth"><number>100</number></property>
+       <property name="fixedHeight"><number>34</number></property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="groupspushButton">
+       <property name="text"><string>Groups</string></property>
+       <property name="minimumWidth"><number>100</number></property>
+       <property name="fixedHeight"><number>34</number></property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="settingspushButton">
+       <property name="text"><string>Settings</string></property>
+       <property name="minimumWidth"><number>100</number></property>
+       <property name="fixedHeight"><number>34</number></property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+   <!-- Status -->
+   <item>
+    <widget class="QLabel" name="statusLabel">
+     <property name="text"><string>Not connected</string></property>
+     <property name="styleSheet"><string>color: #888; font-size: 11px; padding: 0px 2px;</string></property>
+    </widget>
+   </item>
+
+   <!-- Chat area -->
+   <item>
+    <widget class="QTextEdit" name="chattextEdit">
+     <property name="readOnly"><bool>true</bool></property>
+    </widget>
+   </item>
+
+   <!-- Input row -->
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <widget class="QLineEdit" name="messagelineEdit">
+       <property name="placeholderText"><string>Type a message...</string></property>
+       <property name="fixedHeight"><number>36</number></property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="SendpushButton">
+       <property name="text"><string>Send</string></property>
+       <property name="fixedWidth"><number>80</number></property>
+       <property name="fixedHeight"><number>36</number></property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="ClearpushButton_2">
+       <property name="text"><string>Clear</string></property>
+       <property name="fixedWidth"><number>70</number></property>
+       <property name="fixedHeight"><number>36</number></property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+  </layout>
  </widget>
  <resources/>
  <connections/>

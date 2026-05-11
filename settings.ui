@@ -3,68 +3,71 @@
  <class>Settings</class>
  <widget class="QWidget" name="Settings">
   <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>586</width>
-    <height>271</height>
-   </rect>
+   <rect><x>0</x><y>0</y><width>400</width><height>380</height></rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
+  <property name="windowTitle"><string>Settings</string></property>
+  <property name="styleSheet">
+   <string>QWidget { background: #f5f5f5; font-family: -apple-system; font-size: 13px; } QPushButton { background: #e0e0e0; color: #333; border: none; border-radius: 8px; padding: 10px; font-size: 13px; } QPushButton:hover { background: #ccc; } QLabel { font-size: 15px; font-weight: bold; color: #333; }</string>
   </property>
-  <widget class="QPushButton" name="ChangeUserpushButton">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>70</y>
-     <width>151</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Change Username</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="clearchatpushButton">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>110</y>
-     <width>100</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Clear Chat</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="LogoutpushButton">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>150</y>
-     <width>100</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Logout</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="BackpushButton">
-   <property name="geometry">
-    <rect>
-     <x>250</x>
-     <y>190</y>
-     <width>100</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Back</string>
-   </property>
-  </widget>
+  <layout class="QVBoxLayout">
+   <property name="spacing"><number>8</number></property>
+   <property name="leftMargin"><number>24</number></property>
+   <property name="rightMargin"><number>24</number></property>
+   <property name="topMargin"><number>20</number></property>
+   <property name="bottomMargin"><number>20</number></property>
+   <item>
+    <widget class="QLabel">
+     <property name="text"><string>Settings</string></property>
+     <property name="alignment"><set>Qt::AlignCenter</set></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="ChangeUserpushButton">
+     <property name="text"><string>Change Username</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="clearchatpushButton">
+     <property name="text"><string>Clear Chat</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="LogoutpushButton">
+     <property name="text"><string>Logout</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="BackpushButton">
+     <property name="text"><string>Back</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame">
+     <property name="frameShape"><enum>QFrame::HLine</enum></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel">
+     <property name="text"><string>Bonus Features</string></property>
+     <property name="alignment"><set>Qt::AlignCenter</set></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="privateMsgpushButton">
+     <property name="text"><string>💬 Send Private Message</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="createGroupButton">
+     <property name="text"><string>👥 Create / Join Group</string></property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="groupMsgpushButton">
+     <property name="text"><string>📢 Send Group Message</string></property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
